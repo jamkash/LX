@@ -1,0 +1,251 @@
+i:<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<form action="" method="post" enctype='multipart/form-data' id="formm">
+			
+			<input type="file" id="one" name='excel'>
+			<button type="button" id="two">点击</button>
+			<button type="button" id="three">FILE</button>
+			<button type="button" id="four">提交</button>
+		</form>
+	</body>
+	<script type="text/javascript">
+		console.log('这是另外一个该的内容')
+		console.log('这是我3/26的内hside')
+		var url = 'http://192.168.0.105:8080/course/pvwCourse'
+		var tt = document.getElementById('one');
+		console.log(window.navigator
+		console.log(window.navigator.appName)
+		console.log(window.navigator.appCodeName)
+		console.log(window.navigator.appVersion)
+		console.log(window.navigator.cookieEnabled)
+		console.log(window.navigator.platform)
+		console.log(window.navigator.userAgent)
+		if (navigator.userAgent.indexOf('WOW') < 0 && navigator.userAgent.indexOf("Edge") < 0) {
+		var isChrome = true;
+		/*broName = 'Chrome浏览器';*/
+		var strStart = navigator.userAgent.indexOf('Chrome');
+		var strStop = navigator.userAgent.indexOf(' Safari');
+		var temp = navigator.userAgent.substring(strStart, strStop);
+		var broName = temp.replace('/', '版本号');
+		
+		console.log(broName)
+		}
+		
+		function ajax(obj){
+			var xmlhttp;
+			if(Object.prototype.toString.call(obj).slice(8,-1) !== 'Object'){
+				throw TypeError('Parameter type is not object');
+			}
+			obj.url == '' || obj.url == undefined || obj.url == null ? obj.url = '' : obj.url;
+			obj.type == '' || obj.type == undefined || obj.type == null ? obj.type = '' : obj.type;
+			obj.Async == '' || obj.Async == undefined || obj.Async == null ? obj.Async == false : obj.Async;
+			if (window.XMLHttpRequest) {
+			    xmlhttp = new XMLHttpRequest();
+			} else if (window.ActiveXObject) {
+			    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			
+			try {
+			    xmlhttp.open(obj.type, obj.url, obj.Async);
+			    if (obj.type.toUpperCase() == "POST")
+			        xmlhttp.setRequestHeader("Content-Type",
+			            "application/x-www-form-urlencoded");
+			    xmlhttp.onreadystatechange = function () {
+			        if (xmlhttp.readyState == 4) {
+			            if (xmlhttp.status == 200) {
+						   return 	obj.success(xmlhttp.responseText);
+			            }else{
+						   return   obj.error(xmlhttp.responseText);
+						}
+			        }
+			    }
+			    xmlhttp.send();
+			} catch (e) {
+			    console.log("网络异常,稍后尝试");
+			}
+		}
+		
+		document.getElementById('two').onclick = function(){
+			var blob = new Blob([tt],{type:'text/plain'});
+			console.log(blob)
+			console.log(document.getElementById('formm'))
+			var u = new FormData(document.getElementById('formm'));
+			u.append('exl',blob)
+			console.log(u.get('exl'))
+			// ajax({
+			// 	url:url+'?'+u,
+			// 	type:'POST',
+			// 	Async:true,
+			// 	success:function(){},
+			// 	error:function(){}
+			// })
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST',url,true);
+			//xhr.setRequestHeader("Content-Type",'multipart/form-data');
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState == 4){
+					if(xhr.status == 200){
+						
+						console.log(xhr.responseText)
+						
+					}
+				}
+			}
+			xhr.send(u)
+		}
+		
+		//application/vnd.ms-excel
+		document.getElementById('three').onclick = function(){
+			var blob = new Blob([tt],{type:'application/xls'});
+			//var pp = window.URL.createObjectURL(blob);
+			var reader = new FileReader();
+			reader.readAsBinaryString(blob);
+			reader.onload = function(e){
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST',url,true);
+				//xhr.setRequestHeader("Content-Type",'multipart/form-data');
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4){
+						if(xhr.status == 200){
+							
+							console.log(xhr.responseText)
+							
+						}
+					}
+				}
+				console.log(e.target.result)
+				xhr.send(JSON.stringify({'的哈苏':blob}))
+			}
+			
+			
+		}
+		
+		document.getElementById('one').onchange = function(e){
+			var file = e.target.files[0];
+		    
+			var blob = new Blob([file],{type:'application/plain'})
+			var formdata = new FormData(document.getElementById('formm'));
+			
+			formdata.append('xml',blob);
+			
+			
+					var xhr = new XMLHttpRequest();
+					xhr.open('POST',url,true);
+					xhr.setRequestHeader("Content-Type",'multipart/form-data');
+					xhr.onreadystatechange = function(){
+						if(xhr.readyState == 4){
+							if(xhr.status == 200){
+								
+								console.log(xhr.responseText)
+								
+							}
+						}
+					}
+				    
+					xhr.send(formdata)
+				
+			
+			
+		}
+		
+		var userAgent = window.navigator.userAgent; //包含以下属性中所有或一部分的字符串：appCodeName,appName,appVersion,language,platform
+		
+		/*alert(userAgent);*/
+		
+		//FireFox
+		if (userAgent.indexOf('Firefox') != -1) {
+		isFireFox = true;
+		/*broName = 'FireFox浏览器';*/
+		strStart = userAgent.indexOf('Firefox');
+		temp = userAgent.substring(strStart);
+		broName = temp.replace('/', '版本号')
+		
+		}
+		
+		//Edge
+		if (userAgent.indexOf('Edge') != -1) {
+		isEdge = true;
+		/*broName = 'Edge浏览器';*/
+		strStart = userAgent.indexOf('Edge');
+		temp = userAgent.substring(strStart);
+		broName = temp.replace('/', '版本号');
+		}
+		
+		//IE浏览器
+		if (userAgent.indexOf('NET') != -1 && userAgent.indexOf("rv") != -1) {
+		isIE = true;
+		/*broName = 'IE浏览器'; */
+		strStart = userAgent.indexOf('rv');
+		strStop = userAgent.indexOf(')');
+		temp = userAgent.substring(strStart, strStop);
+		broName = temp.replace('rv', 'IE').replace(':', '版本号');
+		}
+		
+		//360极速模式可以区分360安全浏览器和360极速浏览器
+		if (userAgent.indexOf('WOW') != -1 && userAgent.indexOf("NET") < 0 && userAgent.indexOf("Firefox") < 0) {
+		if(navigator.javaEnabled()){
+		is360 = true;
+		broName = '360安全浏览器-极速模式';
+		}else{
+		is360 = true;
+		broName = '360极速浏览器-极速模式';
+		} 
+		}
+		
+		//360兼容
+		if (userAgent.indexOf('WOW') != -1 && userAgent.indexOf("NET") != -1 && userAgent.indexOf("MSIE") != -1 && userAgent.indexOf("rv") < 0) {
+		is360 = true;
+		broName = '360兼容模式';
+		}
+		
+			const explorer = navigator.userAgent;
+				var Browser;
+				// IE  判断浏览器是否支持ActiveX控件，如果浏览器支持ActiveX控件可以利用,
+				if (!!window.ActiveXObject || "ActiveXObject" in window) {
+				  Browser = 'ie';
+				  console.log("当前浏览器为：IE");
+				}
+				//IE  documentMode是一个IE的私有属性，在IE8+中被支持。
+				if (window.document.documentMode) {
+				  Browser = 'ie';
+				  console.log("当前浏览器为：IE");
+				}
+				//firefox 
+				else if (explorer.indexOf("Firefox") >= 0) {
+				  Browser = 'Firefox';
+				  console.log("当前浏览器为：Firefox");
+				}
+				//Chrome
+				else if (explorer.indexOf("Chrome") >= 0) {
+				  Browser = 'Chrome';
+				  console.log("当前浏览器为：Chrome");
+				}
+				//Opera
+				else if (explorer.indexOf("Opera") >= 0) {
+				  Browser = 'Opera';
+				  console.log("当前浏览器为：Opera");
+				}
+				//Safari
+				else if (explorer.indexOf("Safari") >= 0) {
+				  Browser = 'Safari';
+				  console.log("当前浏览器为：Safari");
+				}
+				//Netscape
+				else if (explorer.indexOf("Netscape") >= 0) {
+				  Browser = 'Netscape';
+				  console.log('当前浏览器为：Netscape');
+				}
+				//Edge
+				else if (explorer.indexOf("Edge") >= 0) {
+				  Browser = 'Edge';
+				  console.log('当前浏览器为：Edge');
+				}
+	
+	</script>
+</html>

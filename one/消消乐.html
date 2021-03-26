@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>消消乐</title>
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			#box{
+				width: 870px;
+				height: 700px;
+				border: 1px solid;
+				position: relative;
+			}
+			#zhong,#IMG{
+				perspective:1000px;
+				position: absolute;
+			}
+			img{
+				backface-visibility: hidden;
+				width: 200px;
+				height: 200px;
+			}
+			.back{
+				animation: backw 0.5s ease-in forwards;
+				transform:rotateY(-180deg)
+			}
+			.face{
+				animation: facee 0.5s ease-out forwards;
+			}
+			@keyframes backw{
+				from{transform:rotateY(-180deg)}
+				to{transform:rotateY(0deg)}
+			}
+			
+			@keyframes facee{
+				from{transform:rotateY(0deg)}
+				to{transform:rotateY(180deg)}
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="zhong"></div>
+			<div id="IMG"></div>
+		</div>
+		<button type="button" id="btn">洗牌</button>
+	</body>
+	<script type="text/javascript">
+		var dic = document.getElementById('IMG');
+		var zhong = document.getElementById('zhong');
+		var Img = dic.getElementsByTagName('img');
+		var ppp = zhong.getElementsByTagName('img');
+		var btn = document.getElementById('btn');
+		var newarr = [];
+		var istrue = true;
+		//填充图片
+		function showout(){
+					   for(var i = 0; i < 12; i++){
+						   dic.innerHTML+= '<img src="./images/Parent_child_Handbook/btn1.png" alt="" class="">'
+						   if(i < 6){
+							   zhong.innerHTML+='<img src="./images/Parent_child_Handbook/btn'+(i+1)+'.png" alt="" class="" name="ton'+(i+1)+'">' 
+						   }else{
+							   zhong.innerHTML+='<img src="./images/Parent_child_Handbook/btn'+(i-5)+'.png" alt="" class="" name="ton'+(i-5)+'">'
+						   }
+						   
+					   }
+		}
+		showout()
+		//实现翻转
+		function change(a,b){
+					   for(var i = 0 ;i < ppp.length ;i++){//清楚底牌class，防止没有翻转
+					   		ppp[i].className = '';
+					   }
+					   if(istrue){
+						   Img[a].className = 'face';
+						   ppp[b].className = 'back';
+						   setTimeout(function(){
+							  Array.from(ppp).forEach((item,index)=>{
+								  console.log(h)
+								  if(h == ppp[index].name){
+									  ppp[index].style.visibility = 'hidden'
+								  }
+							  })
+						   },1000)
+						   isclear = true;
+					   }else{
+						   
+						   istrue = true
+					   }
+					  
+		}
+		//事件触发
+		dic.onclick = function(item){
+						   for(var i = 0; i<Img.length;i++){
+						   		Img[i].index = i
+						   }
+						   if(item.target.nodeName == 'IMG'){//这里的item.target是img
+						   		count = item.target.index
+						   		change(item.target.index,item.target.index)
+						   }else{//这里的item.target是div
+						   		istrue = false;
+						   		change(count,count)
+						   }
+					  
+					   //两种获取节点索引的方法
+					   // var lists = Array.from(Img)
+					   // console.log(lists.indexOf(item.target))
+					   
+					   // for(var i = 0; i<Img.length;i++){
+					   //		Img[i].index = i
+					   //}
+					   //e.target.index  e是item
+		}
+		
+		btn.onclick = function(){
+			newarr = [];
+			//zhong.style.display = 'none'
+			luan();
+		}
+		
+		//洗牌
+		function luan(){
+			var arr = [1,2,3,4,5,6,7,8,9,10,11,12];
+			for(var i = 0 ;i < ppp.length ;i++){
+				Img[i].className = '';
+			}
+			for(var i = 0; i < 12 ;i++){
+				var kk = arr.splice(Math.floor(Math.random()*10),1)
+				newarr =  newarr.concat(kk);
+			}
+			newarr =  newarr.concat(arr);
+			zhong.innerHTML = '';
+			for(var i = 0;i<newarr.length;i++){
+				if(newarr[i] < 6){
+					zhong.innerHTML+='<img src="./images/Parent_child_Handbook/btn'+newarr[i]+'.png" alt="" class="">' 
+				}else{
+					zhong.innerHTML+='<img src="./images/Parent_child_Handbook/btn'+(newarr[i]-5)+'.png" alt="" class="">'
+				}
+			}
+		}
+		
+	</script>
+</html>

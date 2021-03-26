@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>洗牌+翻牌</title>
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			#box{
+				width: 870px;
+				height: 700px;
+				border: 1px solid;
+				position: relative;
+			}
+			#zhong,#IMG{
+				perspective:1000px;
+				position: absolute;
+			}
+			img{
+				backface-visibility: hidden;
+			}
+			.back{
+				animation: backw 0.5s ease-in forwards;
+				transform:rotateY(-180deg)
+			}
+			.face{
+				animation: facee 0.5s ease-out forwards;
+			}
+			@keyframes backw{
+				from{transform:rotateY(-180deg)}
+				to{transform:rotateY(0deg)}
+			}
+			
+			@keyframes facee{
+				from{transform:rotateY(0deg)}
+				to{transform:rotateY(180deg)}
+			}
+			.act1{
+				position: absolute;
+				left: 0;
+				top: 0;
+				animation: one 2s ease-in-out forwards;
+			}
+			.act2{
+				position: absolute;
+				left: 0;
+				top: 0;
+				animation: two 2s ease-in-out forwards;
+			}
+			.act3{
+				position: absolute;
+				left: 0;
+				top: 0;
+				animation: three 2s ease-in-out forwards;
+			}
+			.act4{
+				position: absolute;
+				left: 0;
+				top: 0;
+				animation: four 2s ease-in-out forwards;
+			}
+			.act5{
+				position: absolute;
+				left: 0;
+				top: 0;
+				animation: five 2s ease-in-out forwards;
+			}
+			.act6{
+				position: absolute;
+				left: 0;
+				top: 0;
+				animation: six 2s ease-in-out forwards;
+			}
+			.act7{
+				position: absolute;
+				left: 0;
+				top: 0;
+				animation: seven 2s ease-in-out forwards;
+			}
+			.act8{
+				position: absolute;
+				left: 0;
+				top: 0;
+				animation: eight 2s ease-in-out forwards;
+			}
+			.act9{
+                position: absolute;
+				left: 0;
+				top: 0;
+				animation: nine 2s ease-in-out forwards;
+			}
+			@keyframes one{
+				0%{transform: translate3d(0,0,0)}
+				50%{transform: translate3d(280px,234px,0)}
+				100%{transform: translate3d(0,0,0)}
+			}
+			@keyframes two{
+				0%{transform: translate3d(280px,0,0)}
+				50%{transform: translate3d(280px,234px,0)}
+				100%{transform: translate3d(280px,0,0)}
+			}
+			@keyframes three{
+				0%{transform: translate3d(560px,0,0)}
+				50%{transform: translate3d(280px,234px,0)}
+				100%{transform: translate3d(560px,0,0)}
+			}
+			@keyframes four{
+				0%{transform: translate3d(0,234px,0)}
+				50%{transform: translate3d(280px,234px,0)}
+				100%{transform: translate3d(0,234px,0)}
+			}
+			@keyframes five{
+				0%{transform: translate3d(280px,234px,0)}
+				100%{transform: translate3d(280px,234px,0)}
+			}
+			@keyframes six{
+				0%{transform: translate3d(560px,234px,0)}
+				50%{transform: translate3d(280px,234px,0)}
+				100%{transform: translate3d(560px,234px,0)}
+			}
+			@keyframes seven{
+				0%{transform: translate3d(0,468px,0)}
+				50%{transform: translate3d(280px,234px,0)}
+				100%{transform: translate3d(0,468px,0)}
+			}
+			@keyframes eight{
+				0%{transform: translate3d(280px,468px,0)}
+				50%{transform: translate3d(280px,234px,0)}
+				100%{transform: translate3d(280px,468px,0)}
+			}
+			@keyframes nine{
+				0%{transform: translate3d(560px,468px,0)}
+				50%{transform: translate3d(280px,234px,0)}
+				100%{transform: translate3d(560px,468px,0)}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="zhong"></div>
+			<div id="IMG"></div>
+		</div>
+		<button type="button" id="btn">洗牌</button>
+	</body>
+	<script type="text/javascript">
+		var dic = document.getElementById('IMG');
+		var zhong = document.getElementById('zhong');
+		var Img = dic.getElementsByTagName('img');
+		var ppp = zhong.getElementsByTagName('img');
+		var btn = document.getElementById('btn');
+		var istrue = true;
+		var count = 0;
+		var newarr = [];
+		var arr = [1,2,3,4,5,6,7,8,9];
+		var clearcount = 0;//清楚洗牌后Img的class
+		var isclear = true;
+		//填充图片
+		function showout(){
+					   for(var i = 0; i < 9; i++){
+						   dic.innerHTML+= '<img src="./images/Parent_child_Handbook/btn1.png" alt="" class="">'
+						   zhong.innerHTML+='<img src="./images/Parent_child_Handbook/btn'+(i+1)+'.png" alt="" class="">'
+					   }
+		}
+		showout()
+		//实现翻转
+		function change(a,b){
+			           clearcount++;
+					   for(var i = 0 ;i < ppp.length ;i++){//清楚底牌class，防止没有翻转
+					   		ppp[i].className = '';
+					   }
+					   if(istrue){
+						   zhong.style.display = 'block';
+						   if(!isclear && clearcount == 1){//实现可以多番排
+							   for(var i = 0 ;i < ppp.length ;i++){
+							   		Img[i].className = '';
+							   }
+						   }
+						   Img[a].className = 'face';
+						   ppp[b].className = 'back';
+						   isclear = true;
+					   }else{
+						   for(var i = 0 ;i < ppp.length ;i++){
+						   		Img[i].className = '';
+						   }
+						   Img[a].className = 'back';
+						   ppp[b].className = 'face';
+						   newarr = [];
+						   zhong.style.display = 'none'
+						   luan()
+						   istrue = true
+					   }
+					  
+		}
+		//事件触发
+		dic.onclick = function(item){
+						   for(var i = 0; i<Img.length;i++){
+						   		Img[i].index = i
+						   }
+						   if(item.target.nodeName == 'IMG'){//这里的item.target是img
+						   		count = item.target.index
+						   		change(item.target.index,item.target.index)
+						   }else{//这里的item.target是div
+						   		istrue = false;
+						   		change(count,count)
+						   }
+					  
+					   //两种获取节点索引的方法
+					   // var lists = Array.from(Img)
+					   // console.log(lists.indexOf(item.target))
+					   
+					   // for(var i = 0; i<Img.length;i++){
+					   //		Img[i].index = i
+					   //}
+					   //e.target.index  e是item
+		}
+		
+		
+		btn.onclick = function(){
+			newarr = [];
+			zhong.style.display = 'none'
+			luan();
+		}
+		
+		//洗牌
+		function luan(){
+			isclear = false;
+			clearcount = 0;
+			for(var i = 0 ;i < ppp.length ;i++){
+					Img[i].className = '';
+			}
+			var time = setInterval(function(){
+				var newindex = Math.floor(Math.random()*10);
+				newindex == 9 ? newindex = 8 : newindex;
+				newarr.push(arr[newindex]);
+				var set = new Set(newarr);
+				newarr = [];
+				for(let i of set){
+					newarr.push(i)
+				}
+				if(newarr.length == 9){
+					clearInterval(time);
+					zhong.innerHTML = '';
+					for(var i = 0;i<newarr.length;i++){
+						zhong.innerHTML+='<img src="./images/Parent_child_Handbook/btn'+newarr[i]+'.png" alt="">'
+					}
+					
+					for(var i = 1 ;i<10;i++){
+						Img[i-1].className = 'act'+i
+					}
+					
+					return false;
+				}
+			},0)
+		}
+	</script>
+</html>
